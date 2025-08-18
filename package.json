@@ -1,8 +1,19 @@
 {
-	"name": "discord-bot",
+	"name": "discord-personal-bot",
+	"description": "Microservice to manage to my personal discord bot.",
 	"type": "module",
 	"version": "1.0.0",
 	"private": true,
+	"license": "MIT",
+	"author": {
+		"name": "Guilherme da Silva Benevides",
+		"email": "git@gui.dev.br",
+		"url": "https://github.com/gsbenevides2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/gsbenevides2/discord-personal-bot"
+	},
 	"scripts": {
 		"start": "bun src/server.ts",
 		"dev": "bun --watch src/server.ts",

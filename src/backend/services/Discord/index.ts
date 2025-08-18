@@ -25,16 +25,23 @@ export class DiscordService {
 	}
 
 	static setupEventHandlers() {
-		DiscordService.discordJSClient.on("ready", () => {
-			console.log("Discord client is ready");
-		});
+		// DiscordService.discordJSClient.on("ready", () => {
+		// 	console.log("Discord client is ready");
+		// });
 
 		DiscordService.discordJSClient.on("messageCreate", (message) => {
 			DiscordChatService.receiveMessage(message);
 		});
 	}
 
-	static async connect() {
-		await DiscordService.discordJSClient.login(DISCORD_TOKEN);
+	static connect() {
+		return new Promise((resolve, reject) => {
+			const readyListener = () => {
+				DiscordService.discordJSClient.removeListener("ready", readyListener);
+				resolve(true);
+			};
+			DiscordService.discordJSClient.addListener("ready", readyListener);
+			DiscordService.discordJSClient.login(DISCORD_TOKEN).catch(reject);
+		});
 	}
 }

@@ -5,8 +5,16 @@ import { Elysia } from "elysia";
 import api from "./backend/api";
 import { DiscordService } from "./backend/services/Discord";
 import { coolifyHealthChecker } from "./plugins/coolify-healtcheker";
+import { getProjectInfo } from "./utils/getProjectInfo";
+import { sendServerReadyMessage } from "./utils/sendServerReadyMessage";
 
 const port = Bun.env.PORT || 3000;
+const projectInfo = getProjectInfo();
+
+console.log(`${projectInfo.title} v${projectInfo.version}`);
+console.log("Initializing Discord Service...");
+await DiscordService.init();
+console.log("Discord Service initialized");
 
 const app = new Elysia()
 	.use(
@@ -23,11 +31,7 @@ const app = new Elysia()
 	.use(
 		swagger({
 			documentation: {
-				info: {
-					title: "Discord Bot",
-					version: "1.0.0",
-					description: "Discord Bot",
-				},
+				info: projectInfo,
 				tags: [
 					{
 						name: "Messages",
@@ -49,9 +53,6 @@ const app = new Elysia()
 	)
 	.use(coolifyHealthChecker)
 	.use(api)
-	.listen(port, () => {
-		DiscordService.init();
-		console.log(`Server is running on http://localhost:${port}`);
-	});
+	.listen(port, sendServerReadyMessage);
 
 export type App = typeof app;
