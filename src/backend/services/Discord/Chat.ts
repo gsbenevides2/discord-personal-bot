@@ -4,6 +4,7 @@ import {
 	type OmitPartialGroupDMChannel,
 } from "discord.js";
 import { getEnv } from "../../../utils/getEnv";
+import { chatbotClient } from "../../clients/chatbot";
 import { DiscordService } from ".";
 import { DiscordAuthService } from "./Auth";
 
@@ -21,8 +22,19 @@ export class DiscordChatService {
 			message.reply("Você não tem permissão para usar este bot.");
 			return;
 		}
+		const text = message.content;
+		const imagesUrls = message.attachments
+			.filter((attachment) => attachment.contentType?.startsWith("image/"))
+			.map((attachment) => attachment.url);
+		const audioUrl = message.attachments
+			.filter((attachment) => attachment.contentType?.startsWith("audio/"))
+			.first()?.url;
 
-		message.reply("Você tem permissão para usar este bot.");
+		chatbotClient.post("/api/chatbot/", {
+			message: text,
+			images: imagesUrls,
+			audio: audioUrl,
+		});
 	}
 
 	static async sendMessage(message: string) {

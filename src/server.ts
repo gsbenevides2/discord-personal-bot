@@ -35,7 +35,11 @@ const app = new Elysia()
 				tags: [
 					{
 						name: "Messages",
-						description: "Messages",
+						description: "Send and Edit Messages",
+					},
+					{
+						name: "Coolify",
+						description: "Coolify Utils",
 					},
 				],
 				components: {

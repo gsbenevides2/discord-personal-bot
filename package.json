@@ -20,19 +20,23 @@
 		"lint": "bunx --bun biome check --write",
 		"swagger:build": "cd node_modules/@elysiajs/swagger && bun install && bun run build || true && rm -rf node_modules && cd ../../..",
 		"prepare": "husky",
-		"generate": "bunx tsc src/server.ts --emitDeclarationOnly --declaration --outFile src/server.d.ts"
+		"generate:clients": "bun run src/backend/clients/updateClientTypes.ts"
 	},
 	"dependencies": {
 		"@discordjs/voice": "^0.18.0",
 		"@elysiajs/cors": "^1.3.3",
 		"@elysiajs/swagger": "github:gsbenevides2/elysia-swagger",
 		"@grotto/logysia": "^0.1.6",
-		"discord.js": "^14.21.0"
+		"elysia": "latest",
+		"discord.js": "^14.21.0",
+		"@web-bee-ru/openapi-axios": "^0.0.6",
+		"axios": "^1.11.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.1.3",
 		"@commitlint/config-conventional": "^19.8.1",
 		"bun-types": "latest",
+		"openapi-typescript": "^7.9.1",
 		"husky": "^9.1.7"
 	}
 }
