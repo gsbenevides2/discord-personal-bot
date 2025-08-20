@@ -19,7 +19,8 @@
 		"dev": "bun --watch src/server.ts",
 		"lint": "bunx --bun biome check --write",
 		"swagger:build": "cd node_modules/@elysiajs/swagger && bun install && bun run build || true && rm -rf node_modules && cd ../../..",
-		"prepare": "husky"
+		"prepare": "husky",
+		"generate": "bunx tsc src/server.ts --emitDeclarationOnly --declaration --outFile src/server.d.ts"
 	},
 	"dependencies": {
 		"@discordjs/voice": "^0.18.0",
