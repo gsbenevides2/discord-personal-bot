@@ -30,11 +30,16 @@ export class DiscordChatService {
 			.filter((attachment) => attachment.contentType?.startsWith("audio/"))
 			.first()?.url;
 
-		chatbotClient.post("/api/chatbot/", {
-			message: text,
-			images: imagesUrls,
-			audio: audioUrl,
-		});
+		const requetsBody = audioUrl
+			? {
+					audio: audioUrl,
+				}
+			: {
+					message: text,
+					images: imagesUrls,
+				};
+
+		chatbotClient.post("/api/chatbot/", requetsBody);
 	}
 
 	static async sendMessage(message: string) {
