@@ -11,7 +11,10 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
-		/** @description Health check for coolify */
+		/**
+		 * Coolify Utils
+		 * @description Health check for coolify
+		 */
 		get: operations["getHealth"];
 		put?: never;
 		post?: never;
@@ -30,6 +33,10 @@ export interface paths {
 		};
 		get?: never;
 		put?: never;
+		/**
+		 * Send a message
+		 * @description Send a message to the AI chatbot
+		 */
 		post: operations["postApiChatbot"];
 		delete?: never;
 		options?: never;
@@ -58,11 +65,19 @@ export interface operations {
 		};
 		requestBody?: never;
 		responses: {
+			/**
+			 * @description Health check for coolify
+			 * @example OK
+			 */
 			200: {
 				headers: {
 					[name: string]: unknown;
 				};
-				content?: never;
+				content: {
+					"application/json": string;
+					"multipart/form-data": string;
+					"text/plain": string;
+				};
 			};
 		};
 	};
@@ -78,91 +93,87 @@ export interface operations {
 				"application/json":
 					| {
 							/**
-							 * Mensagem de texto
-							 * @description Mensagem de texto
-							 * @example Olá, como vai?
-							 * @example Como você está?
+							 * Message
+							 * @description The message to be sent to the chatbot
+							 * @example Hello, how are you?
 							 */
 							message: string;
 							/**
-							 * Lista de URLs de imagens
-							 * @description Lista de URLs de imagens
+							 * Images
+							 * @description The images to be sent to the chatbot
 							 * @example [
-							 *       "https://example.com/image.png",
-							 *       "https://example.com/image.jpg"
+							 *       "https://example.com/image.png"
 							 *     ]
 							 */
 							images?: string[];
 					  }
 					| {
 							/**
-							 * URL do áudio
-							 * @description URL do áudio
+							 * Audio
+							 * @description The audio to be sent to the chatbot
 							 * @example https://example.com/audio.mp3
-							 * @example https://example.com/audio.wav
 							 */
-							audio?: string;
+							audio: string;
 					  };
 				"multipart/form-data":
 					| {
 							/**
-							 * Mensagem de texto
-							 * @description Mensagem de texto
-							 * @example Olá, como vai?
-							 * @example Como você está?
+							 * Message
+							 * @description The message to be sent to the chatbot
+							 * @example Hello, how are you?
 							 */
 							message: string;
 							/**
-							 * Lista de URLs de imagens
-							 * @description Lista de URLs de imagens
+							 * Images
+							 * @description The images to be sent to the chatbot
 							 * @example [
-							 *       "https://example.com/image.png",
-							 *       "https://example.com/image.jpg"
+							 *       "https://example.com/image.png"
 							 *     ]
 							 */
 							images?: string[];
 					  }
 					| {
 							/**
-							 * URL do áudio
-							 * @description URL do áudio
+							 * Audio
+							 * @description The audio to be sent to the chatbot
 							 * @example https://example.com/audio.mp3
-							 * @example https://example.com/audio.wav
 							 */
-							audio?: string;
+							audio: string;
 					  };
 				"text/plain":
 					| {
 							/**
-							 * Mensagem de texto
-							 * @description Mensagem de texto
-							 * @example Olá, como vai?
-							 * @example Como você está?
+							 * Message
+							 * @description The message to be sent to the chatbot
+							 * @example Hello, how are you?
 							 */
 							message: string;
 							/**
-							 * Lista de URLs de imagens
-							 * @description Lista de URLs de imagens
+							 * Images
+							 * @description The images to be sent to the chatbot
 							 * @example [
-							 *       "https://example.com/image.png",
-							 *       "https://example.com/image.jpg"
+							 *       "https://example.com/image.png"
 							 *     ]
 							 */
 							images?: string[];
 					  }
 					| {
 							/**
-							 * URL do áudio
-							 * @description URL do áudio
+							 * Audio
+							 * @description The audio to be sent to the chatbot
 							 * @example https://example.com/audio.mp3
-							 * @example https://example.com/audio.wav
 							 */
-							audio?: string;
+							audio: string;
 					  };
 			};
 		};
 		responses: {
-			200: {
+			/**
+			 * No content
+			 * @description No content
+			 * @example null
+			 */
+			204: {
 				headers: {
 					[name: string]: unknown;
 				};

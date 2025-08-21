@@ -99,7 +99,7 @@ const MessagesController = new Elysia({
 		async ({ params, body, status }) => {
 			try {
 				await DiscordChatService.editMessage(params.messageId, body.message);
-				return status(StatusMap["No Content"], "Message edited");
+				return status(StatusMap["No Content"], undefined);
 			} catch (_) {
 				return status(StatusMap["Bad Request"], {
 					error: "Unexpected error",
@@ -123,10 +123,9 @@ const MessagesController = new Elysia({
 				}),
 			}),
 			response: {
-				[StatusMap["No Content"]]: t.String({
-					title: "Success message",
-					description: "Success message",
-					examples: ["Message edited"],
+				[StatusMap["No Content"]]: t.Undefined({
+					title: "No content",
+					description: "No content",
 				}),
 				[StatusMap["Bad Request"]]: t.Object(
 					{
