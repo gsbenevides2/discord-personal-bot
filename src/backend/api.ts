@@ -1,22 +1,18 @@
-import { Elysia, StatusMap } from "elysia";
+import { Elysia } from "elysia";
 import MessagesController from "./controllers/Messages/Controller";
-import { AuthService } from "./services/AuthService";
+import { AuthService, UnauthorizedError } from "./services/AuthService";
 
 const api = new Elysia({
 	prefix: "/api",
 })
-	.onBeforeHandle(async ({ headers, status }) => {
+	.onBeforeHandle(async ({ headers }) => {
 		const token = headers?.authorization;
 		if (!token) {
-			return status(StatusMap["Unauthorized"], {
-				error: "Missing Authorization header or invalid token",
-			});
+			throw new UnauthorizedError();
 		}
 		const decoded = await AuthService.verify(token);
 		if (!decoded) {
-			return status(StatusMap["Unauthorized"], {
-				error: "Missing Authorization header or invalid token",
-			});
+			throw new UnauthorizedError();
 		}
 	})
 	.use(MessagesController);

@@ -1,10 +1,10 @@
 import { cors } from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
-import { logger } from "@grotto/logysia";
 import { Elysia } from "elysia";
 import api from "./backend/api";
 import { DiscordService } from "./backend/services/Discord";
 import { coolifyHealthChecker } from "./plugins/coolify-healtcheker";
+import { logger } from "./plugins/logger";
 import { getProjectInfo } from "./utils/getProjectInfo";
 import { sendServerReadyMessage } from "./utils/sendServerReadyMessage";
 
@@ -17,16 +17,7 @@ await DiscordService.init();
 console.log("Discord Service initialized");
 
 const app = new Elysia()
-	.use(
-		logger({
-			logIP: true,
-			writer: {
-				write(msg: string) {
-					console.log(msg);
-				},
-			},
-		}),
-	)
+	.use(logger())
 	.use(cors())
 	.use(
 		swagger({

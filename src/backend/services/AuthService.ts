@@ -12,8 +12,8 @@ export class AuthService {
 		[StatusMap["Unauthorized"]]: t.Object(
 			{
 				error: t.String({
-					description: "Missing Authorization header or invalid token",
-					examples: ["Missing Authorization header or invalid token"],
+					description: "Unauthorized",
+					examples: ["Unauthorized"],
 				}),
 			},
 			{
@@ -21,10 +21,30 @@ export class AuthService {
 				description: "Unauthorized",
 				examples: [
 					{
-						error: "Missing Authorization header or invalid token",
+						error: "Unauthorized",
 					},
 				],
 			},
 		),
 	};
+}
+
+export class UnauthorizedError extends Error {
+	status: number = StatusMap.Unauthorized;
+	message = "Unauthorized";
+	constructor() {
+		super();
+		this.name = "Unauthorized";
+	}
+
+	toResponse() {
+		return Response.json(
+			{
+				error: this.message,
+			},
+			{
+				status: this.status,
+			},
+		);
+	}
 }
