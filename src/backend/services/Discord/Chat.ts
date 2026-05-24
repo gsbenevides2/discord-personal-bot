@@ -10,18 +10,25 @@ import { DiscordAuthService } from "./Auth";
 
 type Message = OmitPartialGroupDMChannel<DiscordJSMessage<boolean>>;
 
-const DISCORD_BOT_ID = getEnv("DISCORD_BOT_ID");
-const DISCORD_ALLOWED_USER_ID = getEnv("DISCORD_ALLOWED_USER_ID");
-const DISCORD_TEXT_CHANNEL_ID = getEnv("DISCORD_TEXT_CHANNEL_ID");
+function getDiscordConfig() {
+	return {
+		DISCORD_BOT_ID: getEnv("DISCORD_BOT_ID"),
+		DISCORD_ALLOWED_USER_ID: getEnv("DISCORD_ALLOWED_USER_ID"),
+		DISCORD_TEXT_CHANNEL_ID: getEnv("DISCORD_TEXT_CHANNEL_ID"),
+	};
+}
 
 export class DiscordChatService {
 	static async receiveMessage(message: Message) {
+		const { DISCORD_BOT_ID } = getDiscordConfig();
 		if (message.author.id === DISCORD_BOT_ID) return;
+
 		const isAllowed = await DiscordAuthService.verifyUser(message.author);
 		if (!isAllowed) {
 			message.reply("Você não tem permissão para usar este bot.");
 			return;
 		}
+
 		const text = message.content;
 		const imagesUrls = message.attachments
 			.filter((attachment) => attachment.contentType?.startsWith("image/"))
@@ -43,6 +50,7 @@ export class DiscordChatService {
 	}
 
 	static async sendMessage(message: string) {
+		const { DISCORD_ALLOWED_USER_ID } = getDiscordConfig();
 		const user = await DiscordService.discordJSClient.users.fetch(
 			DISCORD_ALLOWED_USER_ID,
 		);
@@ -51,6 +59,7 @@ export class DiscordChatService {
 	}
 
 	static async editMessage(id: string, message: string) {
+		const { DISCORD_TEXT_CHANNEL_ID } = getDiscordConfig();
 		const channel = await DiscordService.discordJSClient.channels.fetch(
 			DISCORD_TEXT_CHANNEL_ID,
 		);
